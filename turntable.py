@@ -8,6 +8,7 @@ print("finding an odrive...")
 my_drive = odrive.find_any()
 
 tt0 = my_drive.axis0
+home = tt0.encoder.pos_estimate
 
 set_motor_characteristics(tt0)
 # perhaps have a board-level init?
@@ -39,12 +40,22 @@ print("finished anti-cogging")
 
 tt0.controller.config.control_mode = CTRL_MODE_POSITION_CONTROL
 
+
 def backnforth(loops):
     for i in range(0,loops):
         my_drive.axis0.controller.pos_setpoint = 8192
         time.sleep(.5)
         my_drive.axis0.controller.pos_setpoint = -8192
         time.sleep(.5)
+
+
+def gohome():
+    tt0.controller.pos_setpoint = home
+
+def govel(speed, dir):
+    tt0.controller.config.control_mode = CTRL_MODE_VELOCITY_CONTROL
+    my_drive.axis0.controller.vel_setpoint = speed
+
 
 
 
