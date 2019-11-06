@@ -39,11 +39,12 @@ print("finished anti-cogging")
 
 tt0.controller.config.control_mode = CTRL_MODE_POSITION_CONTROL
 
-for i in range(0,10):
-    my_drive.axis0.controller.pos_setpoint = 8192
-    time.sleep(.5)
-    my_drive.axis0.controller.pos_setpoint = -8192
-    time.sleep(.5)
+def backnforth(loops):
+    for i in range(0,loops):
+        my_drive.axis0.controller.pos_setpoint = 8192
+        time.sleep(.5)
+        my_drive.axis0.controller.pos_setpoint = -8192
+        time.sleep(.5)
 
 
 

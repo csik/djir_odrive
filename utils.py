@@ -1,4 +1,4 @@
-
+from __future__ import print_function
 import odrive
 from odrive.enums import *
 
@@ -14,6 +14,17 @@ def set_motor_characteristics(mot):
     mot.motor.config.current_lim = 40
     mot.controller.config.vel_limit = 10000.0
 
+def calibrate(tt):
+    tt.config.startup_motor_calibration = True
+    tt.config.startup_encoder_offset_calibration = True
+    tt.config.startup_closed_loop_control = True
+
+    # full calibration
+    print("start full calibration")
+    tt.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
+    while(tt.encoder.is_ready != True):
+        print('.', end = '')
+    print("finished full calibration sequence")
 
 def anti_cog(mot):
     '''For anti-cogging (this worked with platter attached)'''
@@ -26,5 +37,15 @@ def anti_cog(mot):
     mot.controller.start_anticogging_calibration()
 
     print("calibration finished")
+
+def init():
+    """Initialize odrive, return first one"""
+
+    print("finding an odrive...")
+    my_drive = odrive.find_any()
+    print("found odrive")
+
+    return(my_drive)
+
 
 
