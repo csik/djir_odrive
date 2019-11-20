@@ -36,7 +36,6 @@ def anti_cog(mot):
     mot.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
     mot.controller.start_anticogging_calibration()
 
-    print("calibration finished")
 
 def init():
     """Initialize odrive, return first one"""
@@ -47,5 +46,9 @@ def init():
 
     return(my_drive)
 
+def spinning_cursor():
+    while True:
+        for cursor in '|/-\\':
+            yield cursor
 
 
